@@ -53,33 +53,30 @@ public:
   }
 };
 
-Node* retrieveTree(Node preoder[], Node inorder[], int pr_begin, int pr_end, int in_begin, int in_end) {
-  int lenght = sizeof(preoder)/sizeof(preoder[0]);
-  int index = 0, size = 0;
-
-
-// 1. Take the first element in the PREORDER
-// 2. Search this element in the INORDER 
-// 3. retrieveTree(left subtree traversals)
-// 4. retrieveTree(right subtree traversals)
-// 5. return the element found in the first step
+Node* retrieveTree(Node preorder[], Node inorder[], int pr_begin, int pr_end, int in_begin, int in_end) {
+  int index = in_begin, leftSize = 0, rightSize=0;
 
   //Handle the trivial case
-  if(pr_begin == pr_end) {
-    return &preoder[pr_begin];
+  if(in_begin == in_end) {
+    return &preorder[pr_begin];
   }
   
-  Node aux = preoder[pr_begin];
+  Node aux = preorder[pr_begin];
 
   // Search the first element of PREORDER in INORDER
-  for( ; index<lenght ; index++) {
+  for( ; index<=in_end ; index++) {
     if(inorder[index] == aux) break;
   }
-  size = index - pr_begin;
-  preoder[pr_begin].pLeft = retrieveTree(preoder, inorder, pr_begin + 1, pr_begin + size, in_begin, index - 1);
-  preoder[pr_begin].pRight = retrieveTree(preoder, inorder, pr_begin + size + 1, pr_end, index + 1, in_end);
+  leftSize = index - in_begin;
+  rightSize = in_end - index;
+      
+  if(leftSize>0)
+    preorder[pr_begin].pLeft = retrieveTree(preorder, inorder, pr_begin + 1, pr_begin + leftSize, in_begin, index - 1);
   
-  return &preoder[pr_begin];
+  if(rightSize>0)
+    preorder[pr_begin].pRight = retrieveTree(preorder, inorder, pr_begin + leftSize + 1, pr_end, index + 1, in_end);
+  
+  return &preorder[pr_begin];
 }
 
 int main() {
@@ -96,11 +93,13 @@ int main() {
   Node nF('F');
   Node nG('G');
   
-  Node preoder[7] = {nA, nB, nC, nD, nE, nF, nG};
+  Node preorder[7] = {nA, nB, nC, nD, nE, nF, nG};
   Node inorder[7] = {nD, nC, nB, nE, nA, nF, nG};
 
-  tr1.pRoot = retrieveTree(preoder, inorder, 0, 7, 0, 7);
+  tr1.pRoot = retrieveTree(preorder, inorder, 0, 6, 0, 6);
 
+  
+  
 
   tr1.preorderTraversal();
   tr1.inorderTraversal();
