@@ -1,20 +1,19 @@
 package Dijkstra;
 
 import Principal.Airport;
-
 import java.util.*;
 
 
 public class DijkstraAlgorithm {
 
-    public static Node calculateShortestPathFromSource(Graph graph, Airport apOrigin, Airport apDestiny) {
+    public static Node calculateShortestPathFromSource(Graph graph, Airport originAp, Airport destinyAp) {
 
-        graph.getNodeByCode(apOrigin.getCode()).setDistance(0.0);
+        graph.getNodeByCode(originAp.getCode()).setDistance(0.0);
         HashSet<Node> settledNodes = new HashSet<Node>();
         HashSet<Node> unsettledNodes = new HashSet<Node>();
-        graph.filterSourceNode(graph.getNodeByCode(apOrigin.getCode()), graph.getNodeByCode(apDestiny.getCode()));
+        graph.filterSourceNode(graph.getNodeByCode(originAp.getCode()), graph.getNodeByCode(destinyAp.getCode()));
 
-        unsettledNodes.add(graph.getNodeByCode(apOrigin.getCode()));
+        unsettledNodes.add(graph.getNodeByCode(originAp.getCode()));
 
         while (unsettledNodes.size() != 0) {
             Node currentNode = getLowestDistanceNode(unsettledNodes);
@@ -30,7 +29,7 @@ public class DijkstraAlgorithm {
             }
             settledNodes.add(currentNode);
         }
-        return graph.getNodeByCode(apDestiny.getCode());
+        return graph.getNodeByCode(destinyAp.getCode());
     }
 
     private static Node getLowestDistanceNode(HashSet < Node > unsettledNodes) {

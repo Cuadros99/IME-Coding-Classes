@@ -11,7 +11,6 @@ public class ReadCSV {
         Scanner sc = new Scanner(new File("src/Principal/planilhaAeroportos.csv"));
         sc.useDelimiter(",|\n");
         sc.nextLine();
-        int i=0;
         while (sc.hasNext()) {
             String code, name, city, state;
             Double latit, longit;
