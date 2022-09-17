@@ -10,11 +10,10 @@ public class Principal {
         airportsList = ReadCSV.getAirportsData();
         Graph airportsGraph = new Graph(airportsList);
         Node destinyNode = DijkstraAlgorithm.calculateShortestPathFromSource(airportsGraph, airportsList.get(0), airportsList.get(10));
-        System.out.printf("d = %f Km\n",destinyNode.getDistance());
-        /*int i=0;
-        Airport originAp = airportsList.get(i);
-        Airport destinyAp = airportsList.get(i+1);
-        System.out.printf("%s -> %s: %.2f Km \n", originAp.getCode(), destinyAp.getCode(), originAp.getDistanceBetween(destinyAp) );
-        */
+        System.out.printf("d = %6.3e Km\n",destinyNode.getDistance());
+        // int i=0;
+        // Airport originAp = airportsList.get(i);
+        // Airport destinyAp = airportsList.get(i+1);
+        // System.out.printf("%s -> %s: %.2f Km \n", originAp.getCode(), destinyAp.getCode(), originAp.getDistanceBetween(destinyAp) );
     }
 }

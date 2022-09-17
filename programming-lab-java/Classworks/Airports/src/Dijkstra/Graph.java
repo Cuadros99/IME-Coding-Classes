@@ -13,16 +13,22 @@ public class Graph {
     public Graph(ArrayList<Airport> airportsList) {
         for(int i=0; i < airportsList.size(); i++) {
             Node aux = new Node(airportsList.get(i));
-            Airport originAp = aux.getAirport();
-            for(int j=0; j < airportsList.size(); j++) {
-                if(i!=j) {
-                    Node destinyApNode = new Node(airportsList.get(j));
-                    Double distance = originAp.getDistanceBetween(destinyApNode.getAirport());
-                    aux.addAdjacentNodes(destinyApNode, distance);
-                }
-            }
             addNode(aux);
         }
+        addAdjacentNodes();
+    }
+
+    private void addAdjacentNodes() {
+      for(Node originNode: airPortNodes) {
+        Airport ap = originNode.getAirport();
+        for(Node destinyNode: airPortNodes) {
+          if(destinyNode != originNode) {
+            Double distance = ap.getDistanceBetween(destinyNode.getAirport());
+            originNode.addAdjacentNodes(destinyNode, distance);
+          }
+        }
+      }
+
     }
     public Node getNode(Node requestedNode) {
         for(Node apNode: airPortNodes) {
