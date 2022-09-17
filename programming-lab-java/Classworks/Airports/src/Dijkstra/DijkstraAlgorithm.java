@@ -8,12 +8,15 @@ public class DijkstraAlgorithm {
 
     public static Node calculateShortestPathFromSource(Graph graph, Airport originAp, Airport destinyAp) {
 
-        graph.getNodeByCode(originAp.getCode()).setDistance(0.0);
+        Node originNode = graph.getNodeByCode(originAp.getCode());
+        Node destinyNode = graph.getNodeByCode(destinyAp.getCode());
+
+        originNode.setDistance(0.0);
         HashSet<Node> settledNodes = new HashSet<Node>();
         HashSet<Node> unsettledNodes = new HashSet<Node>();
-        graph.filterSourceNode(graph.getNodeByCode(originAp.getCode()), graph.getNodeByCode(destinyAp.getCode()));
+        graph.filterSourceNode(originNode, destinyNode);
 
-        unsettledNodes.add(graph.getNodeByCode(originAp.getCode()));
+        unsettledNodes.add(originNode);
 
         while (unsettledNodes.size() != 0) {
             Node currentNode = getLowestDistanceNode(unsettledNodes);
@@ -21,15 +24,15 @@ public class DijkstraAlgorithm {
             for (Map.Entry< Node, Double> adjacencyPair:
                     currentNode.getAdjacentNodes().entrySet()) {
                 Node adjacentNode = adjacencyPair.getKey();
-                Double edgeWeight = adjacencyPair.getValue();
+                Double distanceBetween = adjacencyPair.getValue();
                 if (!settledNodes.contains(adjacentNode)) {
-                    calculateMinimumDistance(adjacentNode, edgeWeight, currentNode);
+                    calculateMinimumDistance(adjacentNode, distanceBetween, currentNode);
                     unsettledNodes.add(adjacentNode);
                 }
             }
             settledNodes.add(currentNode);
         }
-        return graph.getNodeByCode(destinyAp.getCode());
+        return destinyNode;
     }
 
     private static Node getLowestDistanceNode(HashSet < Node > unsettledNodes) {
@@ -45,11 +48,10 @@ public class DijkstraAlgorithm {
         return lowestDistanceNode;
     }
 
-    private static void calculateMinimumDistance(Node evaluationNode,
-                                                 Double edgeWeigh, Node sourceNode) {
+    private static void calculateMinimumDistance(Node evaluationNode, Double distanceBetween, Node sourceNode) {
         Double sourceDistance = sourceNode.getDistance();
-        if (sourceDistance + edgeWeigh < evaluationNode.getDistance()) {
-            evaluationNode.setDistance(sourceDistance + edgeWeigh);
+        if (sourceDistance + distanceBetween < evaluationNode.getDistance()) {
+            evaluationNode.setDistance(sourceDistance + distanceBetween);
             LinkedList<Node> shortestPath = new LinkedList<>(sourceNode.getShortestPath());
             shortestPath.add(sourceNode);
             evaluationNode.setShortestPath(shortestPath);

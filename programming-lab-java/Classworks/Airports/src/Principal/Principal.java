@@ -9,11 +9,24 @@ public class Principal {
         ArrayList<Airport> airportsList = new ArrayList<Airport>();
         airportsList = ReadCSV.getAirportsData();
         Graph airportsGraph = new Graph(airportsList);
-        Node destinyNode = DijkstraAlgorithm.calculateShortestPathFromSource(airportsGraph, airportsList.get(0), airportsList.get(10));
-        System.out.printf("d = %6.3e Km\n",destinyNode.getDistance());
-        // int i=0;
-        // Airport originAp = airportsList.get(i);
-        // Airport destinyAp = airportsList.get(i+1);
-        // System.out.printf("%s -> %s: %.2f Km \n", originAp.getCode(), destinyAp.getCode(), originAp.getDistanceBetween(destinyAp) );
+        Airport originAp = airportsList.get(0);
+        Airport destinyAp = airportsList.get(10);
+        Node destinyNode = DijkstraAlgorithm.calculateShortestPathFromSource(airportsGraph, originAp, destinyAp);
+        System.out.printf("\nTrecho %s -> %s\n", originAp.getCode(), destinyAp.getCode());
+        System.out.println("---------------------");
+        System.out.print("| ");
+
+        for(Node apNode: destinyNode.getShortestPath()) {
+            System.out.print(apNode.getAirport().getCode());
+            System.out.print(" -> ");
+        }
+        System.out.println(destinyAp.code);
+        System.out.printf("| d = %.2f Km\n",destinyNode.getDistance());
+
+        Node middleNode = airportsGraph.getNodeByCode("RBR");
+        Double d1 = originAp.getDirectDistanceBetween(middleNode.getAirport());
+        Double d2 = middleNode.getAirport().getDirectDistanceBetween(destinyAp);
+
+        System.out.printf("\n%.2f + %.2f = %.2f\n", d1, d2, d1+d2);
     }
 }

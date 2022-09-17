@@ -39,7 +39,8 @@ public class Graph {
     //Remove the Destiny node from the list of Adjacent nodes of the Source node 
     public void filterSourceNode(Node sourceNode, Node destinyNode) {
         for(Node apNode: airPortNodes) {
-            if(apNode.getAirport().getCode() == sourceNode.getAirport().getCode())
+// CHANGE THIS FOR apNode == sourceNode
+            if(apNode.getAirport() == sourceNode.getAirport())
                 apNode.removeAdjacentNode(destinyNode);
         }
     }
@@ -54,7 +55,7 @@ public class Graph {
     }
     public Node getNodeByCode(String code) {
         for(Node apNode: airPortNodes) {
-            if(apNode.getAirport().getCode() == code)
+            if(code.equals(apNode.getAirport().getCode()))
                 return apNode;
         }
         return null;
