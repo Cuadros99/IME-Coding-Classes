@@ -40,7 +40,7 @@ public class Graph {
     public void filterSourceNode(Node sourceNode, Node destinyNode) {
         for(Node apNode: airPortNodes) {
 // CHANGE THIS FOR apNode == sourceNode
-            if(apNode.getAirport() == sourceNode.getAirport())
+            if(apNode == sourceNode)
                 apNode.removeAdjacentNode(destinyNode);
         }
     }
@@ -60,5 +60,6 @@ public class Graph {
         }
         return null;
     }
+    public HashSet<Node> getAirPortNodes() { return airPortNodes; }
 
 }

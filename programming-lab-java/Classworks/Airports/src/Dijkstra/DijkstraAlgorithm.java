@@ -1,15 +1,14 @@
 package Dijkstra;
 
-import Principal.Airport;
 import java.util.*;
 
 
 public class DijkstraAlgorithm {
 
-    public static Node calculateShortestPathFromSource(Graph graph, Airport originAp, Airport destinyAp) {
+    public static Node calculateShortestPathFromSource(Graph graph, String originApCode, String destinyApCode) {
 
-        Node originNode = graph.getNodeByCode(originAp.getCode());
-        Node destinyNode = graph.getNodeByCode(destinyAp.getCode());
+        Node originNode = graph.getNodeByCode(originApCode);
+        Node destinyNode = graph.getNodeByCode(destinyApCode);
 
         originNode.setDistance(0.0);
         HashSet<Node> settledNodes = new HashSet<Node>();
