@@ -1,20 +1,21 @@
 package Dijkstra;
 
-import Principal.Airport;
-
 import java.util.*;
 
 
 public class DijkstraAlgorithm {
 
-    public static Node calculateShortestPathFromSource(Graph graph, Airport apOrigin, Airport apDestiny) {
+    public static Node calculateShortestPathFromSource(Graph graph, String originApCode, String destinyApCode) {
 
-        graph.getNodeByCode(apOrigin.getCode()).setDistance(0.0);
+        Node originNode = graph.getNodeByCode(originApCode);
+        Node destinyNode = graph.getNodeByCode(destinyApCode);
+
+        originNode.setDistance(0.0);
         HashSet<Node> settledNodes = new HashSet<Node>();
         HashSet<Node> unsettledNodes = new HashSet<Node>();
-        graph.filterSourceNode(graph.getNodeByCode(apOrigin.getCode()), graph.getNodeByCode(apDestiny.getCode()));
+        graph.filterSourceNode(originNode, destinyNode);
 
-        unsettledNodes.add(graph.getNodeByCode(apOrigin.getCode()));
+        unsettledNodes.add(originNode);
 
         while (unsettledNodes.size() != 0) {
             Node currentNode = getLowestDistanceNode(unsettledNodes);
@@ -22,15 +23,15 @@ public class DijkstraAlgorithm {
             for (Map.Entry< Node, Double> adjacencyPair:
                     currentNode.getAdjacentNodes().entrySet()) {
                 Node adjacentNode = adjacencyPair.getKey();
-                Double edgeWeight = adjacencyPair.getValue();
+                Double distanceBetween = adjacencyPair.getValue();
                 if (!settledNodes.contains(adjacentNode)) {
-                    calculateMinimumDistance(adjacentNode, edgeWeight, currentNode);
+                    calculateMinimumDistance(adjacentNode, distanceBetween, currentNode);
                     unsettledNodes.add(adjacentNode);
                 }
             }
             settledNodes.add(currentNode);
         }
-        return graph.getNodeByCode(apDestiny.getCode());
+        return destinyNode;
     }
 
     private static Node getLowestDistanceNode(HashSet < Node > unsettledNodes) {
@@ -46,11 +47,10 @@ public class DijkstraAlgorithm {
         return lowestDistanceNode;
     }
 
-    private static void calculateMinimumDistance(Node evaluationNode,
-                                                 Double edgeWeigh, Node sourceNode) {
+    private static void calculateMinimumDistance(Node evaluationNode, Double distanceBetween, Node sourceNode) {
         Double sourceDistance = sourceNode.getDistance();
-        if (sourceDistance + edgeWeigh < evaluationNode.getDistance()) {
-            evaluationNode.setDistance(sourceDistance + edgeWeigh);
+        if (sourceDistance + distanceBetween < evaluationNode.getDistance()) {
+            evaluationNode.setDistance(sourceDistance + distanceBetween);
             LinkedList<Node> shortestPath = new LinkedList<>(sourceNode.getShortestPath());
             shortestPath.add(sourceNode);
             evaluationNode.setShortestPath(shortestPath);
